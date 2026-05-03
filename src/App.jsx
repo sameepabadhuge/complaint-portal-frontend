@@ -1,81 +1,69 @@
 import { useState } from "react";
+
 import ReporterStep from "./pages/ReporterStep";
 import ComplaintStep from "./pages/ComplaintStep";
 import SubjectStep from "./pages/SubjectStep";
 import EvidenceStep from "./pages/EvidenceStep";
 import DeclarationStep from "./pages/DeclarationStep";
+import ConfirmationStep from "./pages/ConfirmationStep";
 
 function App() {
   const [step, setStep] = useState(1);
 
   const [formData, setFormData] = useState({
-    submission_type: "Named",
+    submission_type: "Anonymous",
     reporter_category: "",
+
     complaint_category: "",
-    occurrence: "",
     incident_date: "",
     location: "",
+    frequency: "",
     description: "",
-    awareness: "",
+    awareness_method: "",
     reported_before: "",
+    previous_outcome: "",
+
+    involves_senior: "",
+    senior_names: "",
+
+    evidence_file: "",
   });
 
-  // Next Step
-  const next = () => setStep((prev) => prev + 1);
+  const [crn, setCrn] = useState("");
 
-  // Previous Step
-  const prev = () => setStep((prev) => prev - 1);
+  const nextStep = () => setStep((prev) => prev + 1);
+  const prevStep = () => setStep((prev) => prev - 1);
 
   return (
     <div>
-      
-      {/* STEP 1 */}
+
       {step === 1 && (
-        <ReporterStep
-          data={formData}
-          setData={setFormData}
-          next={next}
-        />
+        <ReporterStep data={formData} setData={setFormData} next={nextStep} />
       )}
 
-      {/* STEP 2 */}
       {step === 2 && (
-        <ComplaintStep
-          data={formData}
-          setData={setFormData}
-          nextStep={next}
-          prevStep={prev}
-        />
+        <ComplaintStep data={formData} setData={setFormData} nextStep={nextStep} prevStep={prevStep} />
       )}
 
-      {/* STEP 3 */}
       {step === 3 && (
-        <SubjectStep
-          data={formData}
-          setData={setFormData}
-          nextStep={next}
-          prevStep={prev}
-        />
+        <SubjectStep data={formData} setData={setFormData} nextStep={nextStep} prevStep={prevStep} />
       )}
 
-      {/* STEP 4 */}
       {step === 4 && (
-        <EvidenceStep
-          data={formData}
-          setData={setFormData}
-          nextStep={next}
-          prevStep={prev}
-        />
+        <EvidenceStep data={formData} setData={setFormData} nextStep={nextStep} prevStep={prevStep} />
       )}
 
-      {/* STEP 5 */}
       {step === 5 && (
         <DeclarationStep
           data={formData}
-          setData={setFormData}
-          nextStep={next}
-          prevStep={prev}
+          nextStep={nextStep}
+          prevStep={prevStep}
+          setCrn={setCrn}
         />
+      )}
+
+      {step === 6 && (
+        <ConfirmationStep crn={crn} data={formData} />
       )}
 
     </div>
