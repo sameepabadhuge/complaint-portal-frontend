@@ -1,24 +1,54 @@
 import { useState } from "react";
 import { FaLock, FaExclamationTriangle } from "react-icons/fa";
 import Stepper from "../components/Stepper";
+import axios from "axios";
 
-export default function DeclarationStep({ nextStep, prevStep, data }) {
+// API BASE (change if needed)
+const API_URL = "http://localhost:5000/api/complaints";
+
+export default function DeclarationStep({ nextStep, prevStep, data, setCrn }) {
   const [confirm1, setConfirm1] = useState(false);
   const [confirm2, setConfirm2] = useState(false);
+  const [loading, setLoading] = useState(false);
 
-  // validation (NO captcha now)
   const isValid = confirm1 && confirm2;
 
-  // submit handler
-  const handleSubmit = () => {
+  //  FINAL SUBMIT
+  const handleSubmit = async () => {
     if (!isValid) return;
 
-    console.log("FINAL SUBMISSION:", data);
+    //  Basic validation (important fields)
+    if (!data.complaint_category || !data.description) {
+      alert("Please complete required fields before submitting.");
+      return;
+    }
 
-    // send to backend here
-    // axios.post("/api/complaint", data)
+    try {
+      setLoading(true);
 
-    nextStep(); // move to confirmation page
+      const res = await axios.post(API_URL, data);
+
+      console.log("SERVER RESPONSE:", res.data);
+
+      // Save CRN from backend
+      if (setCrn && res.data.crn) {
+        setCrn(res.data.crn);
+      }
+
+      nextStep(); // go to confirmation page
+
+    } catch (err) {
+      console.error("ERROR:", err);
+
+      //  Better error message
+      const msg =
+        err.response?.data?.error ||
+        "Submission failed. Please try again.";
+
+      alert(msg);
+    } finally {
+      setLoading(false);
+    }
   };
 
   return (
@@ -39,12 +69,12 @@ export default function DeclarationStep({ nextStep, prevStep, data }) {
         </div>
       </div>
 
-      {/* Container */}
       <div className="max-w-4xl mx-auto py-10 px-4">
 
         <h2 className="text-2xl font-bold mb-1">
           Declaration & Finalize
         </h2>
+
         <p className="text-gray-500 mb-6">
           Please review final statement and confirm submission.
         </p>
@@ -53,20 +83,15 @@ export default function DeclarationStep({ nextStep, prevStep, data }) {
 
         <div className="bg-white rounded-2xl shadow-md p-8">
 
-          {/* Declaration Box */}
+          {/* Declaration */}
           <div className="border rounded-xl p-4 mb-6 bg-gray-50">
             <h4 className="font-semibold mb-2">
               Official Declaration Statement
             </h4>
 
             <p className="text-sm text-gray-600 leading-relaxed">
-              I hereby declare that the information provided in this report is,
-              to the best of my knowledge and belief, true, correct, and complete.
-              I understand that submitting a false report knowingly may result in
-              disciplinary action or legal consequences.
-              <br /><br />
-              I acknowledge that the Internal Affairs Unit (IAU) will handle this
-              information with the utmost confidentiality.
+              I hereby declare that the information provided is true and complete.
+              I understand legal consequences of false reporting.
             </p>
           </div>
 
@@ -77,8 +102,7 @@ export default function DeclarationStep({ nextStep, prevStep, data }) {
               checked={confirm1}
               onChange={() => setConfirm1(!confirm1)}
             />
-            I confirm that the information provided is accurate and I understand
-            the implications of providing false information.
+            I confirm information is accurate.
           </label>
 
           {/* Checkbox 2 */}
@@ -88,20 +112,20 @@ export default function DeclarationStep({ nextStep, prevStep, data }) {
               checked={confirm2}
               onChange={() => setConfirm2(!confirm2)}
             />
-            I consent to the processing of my data by the IAU as per the
-            confidentiality policy.
+            I consent to data processing.
           </label>
 
-          {/* Security Notice */}
+          {/* Notice */}
           <div className="bg-orange-50 border border-orange-200 text-orange-700 p-3 rounded text-sm mb-6 flex gap-2">
             <FaExclamationTriangle />
-            Audit & Security Notice: All submissions are securely logged and monitored.
+            Audit & Security Notice: Submissions are logged.
           </div>
 
           {/* Buttons */}
           <div className="flex justify-between items-center">
             <button
               onClick={prevStep}
+              disabled={loading}
               className="border px-4 py-2 rounded-lg hover:bg-gray-100"
             >
               ← Previous Step
@@ -109,26 +133,24 @@ export default function DeclarationStep({ nextStep, prevStep, data }) {
 
             <button
               onClick={handleSubmit}
-              disabled={!isValid}
+              disabled={!isValid || loading}
               className={`px-6 py-2 rounded-lg text-white ${
                 isValid
                   ? "bg-blue-500 hover:bg-blue-600"
                   : "bg-gray-300 cursor-not-allowed"
               }`}
             >
-              Finalize Submission →
+              {loading ? "Submitting..." : "Finalize Submission →"}
             </button>
           </div>
 
-          {/* Error message */}
           {!isValid && (
             <p className="text-red-500 text-xs mt-3 text-right">
-              Please accept both declarations to continue
+              Please accept both declarations
             </p>
           )}
         </div>
 
-        {/* Footer */}
         <p className="text-xs text-gray-400 text-center mt-6">
           SSL Encrypted • IAU Verified • GDPR Compliant
         </p>
