@@ -3,49 +3,56 @@ import { FaLock, FaExclamationTriangle } from "react-icons/fa";
 import Stepper from "../components/Stepper";
 import axios from "axios";
 
-// API BASE (change if needed)
 const API_URL = "http://localhost:5000/api/complaints";
 
 export default function DeclarationStep({ nextStep, prevStep, data, setCrn }) {
+
   const [confirm1, setConfirm1] = useState(false);
   const [confirm2, setConfirm2] = useState(false);
   const [loading, setLoading] = useState(false);
 
   const isValid = confirm1 && confirm2;
 
-  //  FINAL SUBMIT
   const handleSubmit = async () => {
     if (!isValid) return;
-
-    //  Basic validation (important fields)
-    if (!data.complaint_category || !data.description) {
-      alert("Please complete required fields before submitting.");
-      return;
-    }
 
     try {
       setLoading(true);
 
-      const res = await axios.post(API_URL, data);
+      const formData = new FormData();
 
-      console.log("SERVER RESPONSE:", res.data);
+      // FIX: avoid sending wrong fields
+      Object.keys(data).forEach((key) => {
+        if (
+          key !== "evidence" &&
+          key !== "evidence_file" &&
+          data[key] !== undefined &&
+          data[key] !== null
+        ) {
+          formData.append(key, data[key]);
+        }
+      });
 
-      // Save CRN from backend
-      if (setCrn && res.data.crn) {
+      //  append file ONLY once correctly
+      if (data.evidence_file instanceof File) {
+        formData.append("evidence_file", data.evidence_file);
+      }
+
+      const res = await axios.post(API_URL, formData, {
+        headers: {
+          "Content-Type": "multipart/form-data",
+        },
+      });
+
+      if (setCrn) {
         setCrn(res.data.crn);
       }
 
-      nextStep(); // go to confirmation page
+      nextStep();
 
     } catch (err) {
-      console.error("ERROR:", err);
-
-      //  Better error message
-      const msg =
-        err.response?.data?.error ||
-        "Submission failed. Please try again.";
-
-      alert(msg);
+      console.error(err);
+      alert(err.response?.data?.error || "Submission failed");
     } finally {
       setLoading(false);
     }
@@ -75,10 +82,6 @@ export default function DeclarationStep({ nextStep, prevStep, data, setCrn }) {
           Declaration & Finalize
         </h2>
 
-        <p className="text-gray-500 mb-6">
-          Please review final statement and confirm submission.
-        </p>
-
         <Stepper currentStep={5} />
 
         <div className="bg-white rounded-2xl shadow-md p-8">
@@ -89,72 +92,52 @@ export default function DeclarationStep({ nextStep, prevStep, data, setCrn }) {
               Official Declaration Statement
             </h4>
 
-            <p className="text-sm text-gray-600 leading-relaxed">
-              I hereby declare that the information provided is true and complete.
-              I understand legal consequences of false reporting.
+            <p className="text-sm text-gray-600">
+              I confirm all details are correct.
             </p>
           </div>
 
-          {/* Checkbox 1 */}
-          <label className="flex items-start gap-2 mb-4 text-sm cursor-pointer">
+          {/* Checkboxes */}
+          <label className="flex gap-2 mb-4">
             <input
               type="checkbox"
               checked={confirm1}
               onChange={() => setConfirm1(!confirm1)}
             />
-            I confirm information is accurate.
+            Confirm accuracy
           </label>
 
-          {/* Checkbox 2 */}
-          <label className="flex items-start gap-2 mb-6 text-sm cursor-pointer">
+          <label className="flex gap-2 mb-6">
             <input
               type="checkbox"
               checked={confirm2}
               onChange={() => setConfirm2(!confirm2)}
             />
-            I consent to data processing.
+            Consent processing
           </label>
 
           {/* Notice */}
-          <div className="bg-orange-50 border border-orange-200 text-orange-700 p-3 rounded text-sm mb-6 flex gap-2">
+          <div className="bg-orange-50 border p-3 rounded mb-6 flex gap-2">
             <FaExclamationTriangle />
-            Audit & Security Notice: Submissions are logged.
+            Logged securely
           </div>
 
           {/* Buttons */}
-          <div className="flex justify-between items-center">
-            <button
-              onClick={prevStep}
-              disabled={loading}
-              className="border px-4 py-2 rounded-lg hover:bg-gray-100"
-            >
-              ← Previous Step
+          <div className="flex justify-between">
+            <button onClick={prevStep} className="border px-4 py-2 rounded">
+              ← Previous
             </button>
 
             <button
               onClick={handleSubmit}
               disabled={!isValid || loading}
-              className={`px-6 py-2 rounded-lg text-white ${
-                isValid
-                  ? "bg-blue-500 hover:bg-blue-600"
-                  : "bg-gray-300 cursor-not-allowed"
-              }`}
+              className="bg-blue-500 text-white px-6 py-2 rounded"
             >
               {loading ? "Submitting..." : "Finalize Submission →"}
             </button>
           </div>
 
-          {!isValid && (
-            <p className="text-red-500 text-xs mt-3 text-right">
-              Please accept both declarations
-            </p>
-          )}
         </div>
-
-        <p className="text-xs text-gray-400 text-center mt-6">
-          SSL Encrypted • IAU Verified • GDPR Compliant
-        </p>
-
       </div>
     </div>
   );
