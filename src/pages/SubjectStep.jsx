@@ -65,7 +65,7 @@ export default function SubjectStep({ nextStep, prevStep, data, setData }) {
   const handleNext = () => {
     const s = data.subjectData || {};
 
-    // ✅ validation
+    //  validation
     if (!s.involvesSeniorManagement) {
       alert("Please select senior management involvement");
       return;
@@ -79,7 +79,7 @@ export default function SubjectStep({ nextStep, prevStep, data, setData }) {
       return;
     }
 
-    // ✅ transform correctly for backend
+    //  transform correctly for backend
     const names = subjects.map((sub) => sub.name || "Unknown");
 
     const updatedData = {

@@ -10,7 +10,7 @@ export default function Stepper({ currentStep = 1 }) {
     "DONE",
   ];
 
-  // 🔥 Guard currentStep
+  // Guard currentStep
   const safeStep =
     currentStep < 1 ? 1 :
     currentStep > steps.length ? steps.length :
@@ -26,7 +26,7 @@ export default function Stepper({ currentStep = 1 }) {
 
         return (
           <div
-            key={label} // ✅ better key
+            key={label} // better key
             className="flex-1 flex flex-col items-center relative"
           >
 

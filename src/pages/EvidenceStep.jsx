@@ -13,7 +13,7 @@ export default function EvidenceStep({ nextStep, prevStep, data, setData }) {
   const selectedTypes = eData.evidenceType || [];
   const files = eData.files || [];
 
-  // ✅ Toggle evidence type
+  //  Toggle evidence type
   const toggleType = (type) => {
     const updated = selectedTypes.includes(type)
       ? selectedTypes.filter((t) => t !== type)
@@ -28,14 +28,14 @@ export default function EvidenceStep({ nextStep, prevStep, data, setData }) {
     }));
   };
 
-  // ✅ Handle Yes / No
+  //  Handle Yes / No
   const setHasEvidence = (value) => {
     setData((prev) => ({
       ...prev,
       evidenceData: {
         ...prev.evidenceData,
         hasEvidence: value,
-        // 🔥 reset when No
+        //  reset when No
         ...(value === "No" && {
           evidenceType: [],
           files: [],
@@ -44,7 +44,7 @@ export default function EvidenceStep({ nextStep, prevStep, data, setData }) {
     }));
   };
 
-  // ✅ Handle file upload
+  //  Handle file upload
   const handleFiles = (e) => {
     const file = e.target.files[0];
     if (!file) return;
@@ -75,7 +75,7 @@ export default function EvidenceStep({ nextStep, prevStep, data, setData }) {
     }));
   };
 
-  // ✅ NEXT VALIDATION
+  //  NEXT VALIDATION
   const handleNext = () => {
     const e = data.evidenceData || {};
 

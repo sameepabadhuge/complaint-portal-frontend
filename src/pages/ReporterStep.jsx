@@ -29,7 +29,7 @@ export default function ReporterStep({ next, data, setData }) {
       userData: {
         submissionType: type,
 
-        // 🔥 CLEAR DATA IF ANONYMOUS
+        // CLEAR DATA IF ANONYMOUS
         ...(type === "Anonymous" && {
           fullName: "",
           email: "",

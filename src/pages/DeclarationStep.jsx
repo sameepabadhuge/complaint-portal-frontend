@@ -21,13 +21,13 @@ export default function DeclarationStep({ nextStep, prevStep, data, setCrn }) {
 
       const formData = new FormData();
 
-      // 🔥 SAFE DATA EXTRACTION
+      // SAFE DATA EXTRACTION
       const userData = data.userData || {};
       const complaintDataRaw = data.complaintData || {};
       const subjectData = data.subjectData || {};
       const evidenceRaw = data.evidenceData || {};
 
-      // ✅ FIX complaint data
+      //  FIX complaint data
       const complaintData = {
         ...complaintDataRaw,
         previousReportDetails:
@@ -36,7 +36,7 @@ export default function DeclarationStep({ nextStep, prevStep, data, setCrn }) {
             : "",
       };
 
-      // ✅ FINAL VALIDATION (important)
+      // FINAL VALIDATION (important)
       if (!complaintData.complaintCategory) {
         alert("Complaint data missing");
         setLoading(false);
@@ -52,7 +52,7 @@ export default function DeclarationStep({ nextStep, prevStep, data, setCrn }) {
         return;
       }
 
-      // ✅ FIX evidence data (FULL MODEL MATCH)
+      //  FIX evidence data (FULL MODEL MATCH)
       const evidenceData = {
         hasEvidence: evidenceRaw.hasEvidence || "No",
         evidenceType: evidenceRaw.evidenceType || [],
@@ -60,30 +60,30 @@ export default function DeclarationStep({ nextStep, prevStep, data, setCrn }) {
         additionalInfo: evidenceRaw.additionalInfo || "",
       };
 
-      // 🔥 APPEND JSON DATA
+      // APPEND JSON DATA
       formData.append("userData", JSON.stringify(userData));
       formData.append("complaintData", JSON.stringify(complaintData));
       formData.append("subjectData", JSON.stringify(subjectData));
       formData.append("evidenceData", JSON.stringify(evidenceData));
 
-      // 🔥 MULTIPLE FILE SUPPORT
+      //  MULTIPLE FILE SUPPORT
       if (evidenceRaw.files?.length > 0) {
         evidenceRaw.files.forEach((file) => {
           formData.append("files", file);
         });
       }
 
-      // 🔥 DEBUG (very useful)
+      //  DEBUG (very useful)
       const debugData = {};
       formData.forEach((value, key) => {
         debugData[key] = value;
       });
       console.log("FINAL SUBMIT DATA:", debugData);
 
-      // ✅ API CALL
+      //  API CALL
       const res = await axios.post(API_URL, formData);
 
-      // ✅ SAVE CRN
+      //  SAVE CRN
       if (setCrn) {
         setCrn(res.data.crn);
       }

@@ -18,7 +18,7 @@ export default function ComplaintStep({ nextStep, prevStep, data, setData }) {
   const handleNext = () => {
     const c = data.complaintData || {};
 
-    // ✅ Required validation
+    // Required validation
     if (
       !c.complaintCategory ||
       !c.description ||
@@ -32,13 +32,13 @@ export default function ComplaintStep({ nextStep, prevStep, data, setData }) {
       return;
     }
 
-    // ✅ Description length
+    // Description length
     if (c.description.length < 50) {
       alert("Description must be at least 50 characters");
       return;
     }
 
-    // ✅ Conditional validation
+    // Conditional validation
     if (c.reportedPreviously === "Yes" && !c.previousReportDetails) {
       alert("Please provide previous report details");
       return;

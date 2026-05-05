@@ -18,7 +18,7 @@ export default function ConfirmationStep({ data, crn }) {
   };
 
   const handleReset = () => {
-    // 🔥 simple reset (keep for now)
+    // simple reset (keep for now)
     window.location.reload();
   };
 
