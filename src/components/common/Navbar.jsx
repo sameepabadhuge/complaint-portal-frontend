@@ -16,7 +16,7 @@ const Navbar = () => {
     <header className="sticky top-0 z-50 w-full shadow-lg bg-[#0156A6]">
       <div className="max-w-7xl mx-auto px-3 sm:px-4">
         {/* Main Navbar */}
-        <div className="h-24 md:h-28 flex items-center justify-between">
+        <div className="h-28 md:h-32 flex items-center justify-between">
           
           {/* Logo */}
           <NavLink
@@ -26,7 +26,7 @@ const Navbar = () => {
             <img
               src="/01SLT.jpg.jpeg"
               alt="SLTMobitel"
-              className="h-16 sm:h-20 md:h-24 w-auto object-contain bg-[#0156A6]"
+              className="h-20 sm:h-24 md:h-28 lg:h-32 w-auto object-contain bg-[#0156A6]"
             />
           </NavLink>
 
