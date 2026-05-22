@@ -75,7 +75,7 @@ const AdminSidebar = () => {
 
       {/* Sidebar */}
       <aside
-        className={`fixed left-0 top-16 md:top-0 h-[calc(100vh-4rem)] md:h-screen border-r border-cyan-400/30 shadow-xl transition-all duration-300 ease-in-out z-50 md:z-30 overflow-y-auto flex flex-col ${
+        className={`fixed left-0 top-16 md:top-0 h-[calc(100vh-4rem)] md:h-screen border-r border-cyan-400/30 shadow-xl transition-all duration-300 ease-in-out z-50 md:z-30 flex flex-col overflow-y-hidden md:overflow-y-auto ${
           isOpen ? "translate-x-0" : "-translate-x-full"
         } md:translate-x-0 ${
           isCollapsed ? "md:w-24 w-64" : "w-64"
@@ -140,11 +140,14 @@ const AdminSidebar = () => {
           </NavLink>
         </nav>
 
+        {/* Push Logout to Bottom */}
+        <div className="flex-1" />
+
         {/* Divider */}
-        <div className="mx-4 my-3 border-t border-cyan-300/35" />
+        <div className="mx-4 border-t border-cyan-300/35" />
 
         {/* Logout */}
-        <div className="px-4 pb-4">
+        <div className="p-4">
           <button
             onClick={() => {
               handleLogout();
