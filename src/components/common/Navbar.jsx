@@ -16,7 +16,7 @@ const Navbar = () => {
     <header className="sticky top-0 z-50 w-full shadow-lg bg-[#0156A6]">
       <div className="max-w-7xl mx-auto px-3 sm:px-4">
         {/* Main Navbar */}
-        <div className="h-32 md:h-36 flex items-center justify-between">
+        <div className="h-24 md:h-28 flex items-center justify-between">
           
           {/* Logo */}
           <NavLink
@@ -26,7 +26,7 @@ const Navbar = () => {
             <img
               src="/01SLT.jpg.jpeg"
               alt="SLTMobitel"
-              className="h-24 sm:h-28 md:h-32 lg:h-36 w-auto object-contain bg-[#0156A6]"
+              className="h-16 sm:h-20 md:h-24 w-auto object-contain bg-[#0156A6]"
             />
           </NavLink>
 
@@ -64,9 +64,9 @@ const Navbar = () => {
             aria-label="Toggle Menu"
           >
             {menuOpen ? (
-              <FiX size={30} />
+              <FiX size={28} />
             ) : (
-              <FiMenu size={30} />
+              <FiMenu size={28} />
             )}
           </button>
         </div>
