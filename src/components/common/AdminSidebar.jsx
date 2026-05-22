@@ -21,7 +21,7 @@ const AdminSidebar = () => {
 
   const getNavItemClass = (isActive) => {
     const baseClass = `flex items-center gap-3 px-4 py-3 text-sm font-semibold rounded-lg transition-all border ${
-      isCollapsed ? "justify-center px-2" : ""
+      isCollapsed ? "justify-center" : ""
     }`;
 
     return isActive
@@ -40,13 +40,14 @@ const AdminSidebar = () => {
           <img
             src="/01SLT.jpg.jpeg"
             alt="SLTMobitel"
-            className="h-16 sm:h-20 w-auto object-contain bg-[#0156A6]"
+            className="h-20 sm:h-24 w-auto object-contain bg-[#0156A6]"
           />
         </div>
 
         <button
           onClick={() => setIsOpen(!isOpen)}
           className="p-2 hover:bg-white/10 rounded-lg transition-colors"
+          aria-label="Toggle Sidebar"
         >
           <svg
             className="w-6 h-6 text-white"
@@ -77,27 +78,28 @@ const AdminSidebar = () => {
         className={`fixed left-0 top-0 h-screen border-r border-cyan-400/30 shadow-xl transition-all duration-300 ease-in-out z-40 md:z-30 md:translate-x-0 overflow-y-auto flex flex-col ${
           isOpen ? "translate-x-0" : "-translate-x-full"
         } md:sticky md:top-0 ${
-          isCollapsed ? "w-20" : "w-64"
+          isCollapsed ? "md:w-24 w-64" : "w-64"
         }`}
         style={{ background: "#0156A6" }}
       >
         {/* Desktop Logo */}
-        <div className="hidden md:flex items-center justify-between pt-6 pb-6 px-4">
+        <div className="hidden md:flex items-center justify-between py-4 px-4">
           <div
-            className={`h-24 w-auto max-w-[260px] transition-all duration-300 ${
+            className={`transition-all duration-300 ${
               isCollapsed ? "opacity-0 w-0 overflow-hidden" : ""
             }`}
           >
             <img
               src="/01SLT.jpg.jpeg"
               alt="SLTMobitel"
-              className="h-full w-auto object-contain bg-[#0156A6]"
+              className="h-20 sm:h-24 md:h-28 lg:h-32 w-auto object-contain bg-[#0156A6]"
             />
           </div>
 
           <button
             onClick={() => setIsCollapsed(!isCollapsed)}
             className="p-2 hover:bg-white/10 rounded-lg text-white"
+            aria-label="Collapse Sidebar"
           >
             <svg
               className={`w-5 h-5 transition-transform ${
@@ -147,12 +149,12 @@ const AdminSidebar = () => {
               handleLogout();
               setIsOpen(false);
             }}
-            className={`w-full px-4 py-3 bg-green-600 hover:bg-green-700 text-white text-sm font-semibold rounded-lg transition-all flex items-center gap-2 ${
-              isCollapsed ? "justify-center px-2" : ""
+            className={`w-full px-4 py-3 bg-green-600 hover:bg-green-700 text-white text-sm font-semibold rounded-lg transition-all flex items-center gap-3 ${
+              isCollapsed ? "justify-center" : ""
             }`}
           >
             <FiLogOut className="w-5 h-5 flex-shrink-0" />
-            {!isCollapsed && "Logout"}
+            {!isCollapsed && <span>Logout</span>}
           </button>
         </div>
       </aside>
