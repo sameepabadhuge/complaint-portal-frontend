@@ -1,10 +1,16 @@
 import { useState } from "react";
 import { NavLink, useNavigate } from "react-router-dom";
 import { useAdminAuth } from "../../hooks/useAdminAuth";
+import {
+  FiHome,
+  FiAlertCircle,
+  FiLogOut,
+} from "react-icons/fi";
 
 const AdminSidebar = () => {
   const navigate = useNavigate();
-  const { adminUser, logout } = useAdminAuth();
+  const { logout } = useAdminAuth();
+
   const [isOpen, setIsOpen] = useState(false);
   const [isCollapsed, setIsCollapsed] = useState(false);
 
@@ -27,14 +33,14 @@ const AdminSidebar = () => {
     <>
       {/* Mobile Header */}
       <div
-        className="fixed top-0 left-0 right-0 h-16 border-b border-cyan-400/30 shadow-lg z-40 md:hidden flex items-center justify-between px-4"
-        style={{ background: "#0B5EAE" }}
+        className="fixed top-0 left-0 right-0 h-24 border-b border-cyan-400/30 shadow-lg z-40 md:hidden flex items-center justify-between px-4"
+        style={{ background: "#0156A6" }}
       >
-        <div className="flex items-center gap-2">
+        <div className="flex items-center">
           <img
             src="/01SLT.jpg.jpeg"
             alt="SLTMobitel"
-            className="h-10 w-auto object-contain"
+            className="h-16 sm:h-20 w-auto object-contain bg-[#0156A6]"
           />
         </div>
 
@@ -58,7 +64,7 @@ const AdminSidebar = () => {
         </button>
       </div>
 
-      {/* Overlay */}
+      {/* Mobile Overlay */}
       {isOpen && (
         <div
           className="fixed inset-0 bg-black/40 z-30 md:hidden"
@@ -73,19 +79,19 @@ const AdminSidebar = () => {
         } md:sticky md:top-0 ${
           isCollapsed ? "w-20" : "w-64"
         }`}
-        style={{ background: "#0B5EAE" }}
+        style={{ background: "#0156A6" }}
       >
-        {/* Logo */}
-        <div className="hidden md:flex items-center justify-between pt-8 pb-6 px-4">
+        {/* Desktop Logo */}
+        <div className="hidden md:flex items-center justify-between pt-6 pb-6 px-4">
           <div
-            className={`h-16 w-auto max-w-[200px] transition-all duration-300 ${
-              isCollapsed ? "opacity-0 w-0" : ""
+            className={`h-24 w-auto max-w-[260px] transition-all duration-300 ${
+              isCollapsed ? "opacity-0 w-0 overflow-hidden" : ""
             }`}
           >
             <img
-              src="/logoSlt.jpg"
+              src="/01SLT.jpg.jpeg"
               alt="SLTMobitel"
-              className="h-full w-auto object-contain"
+              className="h-full w-auto object-contain bg-[#0156A6]"
             />
           </div>
 
@@ -111,14 +117,15 @@ const AdminSidebar = () => {
           </button>
         </div>
 
-        {/* NAV LINKS (GREEN ACTIVE ONLY) */}
+        {/* Navigation */}
         <nav className="px-4 py-6 space-y-2">
           <NavLink
             to="/admin/dashboard"
             className={({ isActive }) => getNavItemClass(isActive)}
             onClick={() => setIsOpen(false)}
           >
-            Dashboard
+            <FiHome className="w-5 h-5 flex-shrink-0" />
+            {!isCollapsed && <span>Dashboard</span>}
           </NavLink>
 
           <NavLink
@@ -126,52 +133,32 @@ const AdminSidebar = () => {
             className={({ isActive }) => getNavItemClass(isActive)}
             onClick={() => setIsOpen(false)}
           >
-            Complaints
+            <FiAlertCircle className="w-5 h-5 flex-shrink-0" />
+            {!isCollapsed && <span>Complaints</span>}
           </NavLink>
         </nav>
 
         <div className="mx-4 border-t border-cyan-300/35" />
 
-        {/* USER INFO (GREEN UPDATED) */}
-        <div className="p-4 space-y-4">
-          {adminUser?.email && (
-            <div className="px-4 py-3 bg-gradient-to-r from-green-600 via-green-500 to-green-400 text-white rounded-lg border-none">
-              <p className="text-xs text-white mb-1">Logged in as</p>
-              <p className="text-sm font-semibold text-white truncate">
-                {adminUser.email}
-              </p>
-            </div>
-          )}
-
-          {/* LOGOUT BUTTON (GREEN ONLY) */}
+        {/* Logout Section */}
+        <div className="p-4 mt-auto">
           <button
             onClick={() => {
               handleLogout();
               setIsOpen(false);
             }}
-            className={`w-full px-4 py-3 bg-green-600 hover:bg-green-700 text-white text-sm font-semibold rounded-lg transition-all shadow-md flex items-center gap-2 ${
+            className={`w-full px-4 py-3 bg-green-600 hover:bg-green-700 text-white text-sm font-semibold rounded-lg transition-all flex items-center gap-2 ${
               isCollapsed ? "justify-center px-2" : ""
             }`}
           >
-            <svg
-              className="w-4 h-4"
-              fill="none"
-              stroke="currentColor"
-              viewBox="0 0 24 24"
-            >
-              <path
-                strokeLinecap="round"
-                strokeLinejoin="round"
-                strokeWidth={2}
-                d="M17 16l4-4m0 0l-4-4m4 4H7m6 4v1a3 3 0 01-3 3H6a3 3 0 01-3-3V7a3 3 0 013-3h4a3 3 0 013 3v1"
-              />
-            </svg>
-            Logout
+            <FiLogOut className="w-5 h-5 flex-shrink-0" />
+            {!isCollapsed && "Logout"}
           </button>
         </div>
       </aside>
 
-      <div className="h-16 md:hidden" />
+      {/* Mobile Header Spacer */}
+      <div className="h-24 md:hidden" />
     </>
   );
 };
