@@ -1,11 +1,7 @@
 import { useState } from "react";
 import { NavLink, useNavigate } from "react-router-dom";
 import { useAdminAuth } from "../../hooks/useAdminAuth";
-import {
-  FiHome,
-  FiFileText,
-  FiLogOut,
-} from "react-icons/fi";
+import { FiHome, FiFileText, FiLogOut } from "react-icons/fi";
 
 const AdminSidebar = () => {
   const navigate = useNavigate();
@@ -33,14 +29,14 @@ const AdminSidebar = () => {
     <>
       {/* Mobile Header */}
       <div
-        className="fixed top-0 left-0 right-0 h-16 border-b border-cyan-400/30 shadow-lg z-40 md:hidden flex items-center justify-between px-4"
+        className="fixed top-0 left-0 right-0 h-16 border-b border-cyan-400/30 shadow-lg z-50 md:hidden flex items-center justify-between px-4"
         style={{ background: "#0156A6" }}
       >
         <div className="flex items-center">
           <img
             src="/01SLT.jpg.jpeg"
             alt="SLTMobitel"
-            className="h-14 w-auto object-contain bg-[#0156A6]"
+            className="h-14 w-auto object-contain"
           />
         </div>
 
@@ -72,14 +68,14 @@ const AdminSidebar = () => {
       {/* Mobile Overlay */}
       {isOpen && (
         <div
-          className="fixed inset-0 bg-black/40 z-30 md:hidden"
+          className="fixed inset-0 bg-black/40 z-40 md:hidden"
           onClick={() => setIsOpen(false)}
         />
       )}
 
       {/* Sidebar */}
       <aside
-        className={`fixed left-0 top-0 h-screen border-r border-cyan-400/30 shadow-xl transition-all duration-300 ease-in-out z-40 md:z-30 overflow-y-auto flex flex-col ${
+        className={`fixed left-0 top-16 md:top-0 h-[calc(100vh-4rem)] md:h-screen border-r border-cyan-400/30 shadow-xl transition-all duration-300 ease-in-out z-50 md:z-30 overflow-y-auto flex flex-col ${
           isOpen ? "translate-x-0" : "-translate-x-full"
         } md:translate-x-0 ${
           isCollapsed ? "md:w-24 w-64" : "w-64"
@@ -96,7 +92,7 @@ const AdminSidebar = () => {
             <img
               src="/01SLT.jpg.jpeg"
               alt="SLTMobitel"
-              className="h-20 sm:h-24 md:h-28 lg:h-32 w-auto object-contain bg-[#0156A6]"
+              className="h-20 sm:h-24 md:h-28 lg:h-32 w-auto object-contain"
             />
           </div>
 
@@ -144,10 +140,11 @@ const AdminSidebar = () => {
           </NavLink>
         </nav>
 
-        <div className="mx-4 border-t border-cyan-300/35" />
+        {/* Divider */}
+        <div className="mx-4 my-3 border-t border-cyan-300/35" />
 
         {/* Logout */}
-        <div className="p-4 mt-auto">
+        <div className="px-4 pb-4">
           <button
             onClick={() => {
               handleLogout();
