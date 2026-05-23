@@ -175,7 +175,7 @@ const ComplaintDetails = () => {
 
   return (
 
-    <div className="space-y-6 overflow-x-hidden bg-white">
+    <div className="space-y-6 overflow-x-hidden break-words">
 
 
       {/* Investigation Header */}
@@ -188,7 +188,7 @@ const ComplaintDetails = () => {
 
             <div>
 
-              <h1 className="text-2xl font-bold text-white tracking-tight">
+              <h1 className="text-2xl font-bold text-slate-900 tracking-tight break-words">
 
                 Internal Affairs Investigation Record
 
@@ -214,7 +214,7 @@ const ComplaintDetails = () => {
 
 
         {/* Metadata Strip */}
-        <div className="grid grid-cols-2 lg:grid-cols-5 divide-x divide-y lg:divide-y-0 divide-white/30">
+        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-5 divide-y lg:divide-y-0 lg:divide-x divide-slate-200">
 
           <div className="p-4 min-w-0">
 
@@ -349,7 +349,7 @@ const ComplaintDetails = () => {
 
 
           {/* Case Summary */}
-          <section className="border-b border-slate-200 p-6">
+          <section className="border-b border-slate-200 p-4 sm:p-6">
 
             <div className="flex items-center gap-2 mb-5">
 
@@ -455,7 +455,7 @@ const ComplaintDetails = () => {
 
 
           {/* Incident Narrative */}
-          <section className="border-b border-slate-200 p-6">
+          <section className="border-b border-slate-200 p-4 sm:p-6">
 
             <div className="flex items-center gap-2 mb-5">
 
@@ -484,7 +484,7 @@ const ComplaintDetails = () => {
 
 
           {/* Subject Registry */}
-          <section className="border-b border-slate-200 p-6">
+          <section className="border-b border-slate-200 p-4 sm:p-6">
 
             <div className="flex items-center gap-2 mb-5">
 
@@ -519,7 +519,7 @@ const ComplaintDetails = () => {
                           Full Name
 
                         </p>
-
+                  
                         <p className="font-medium text-slate-800 break-words">
 
                           {subject.fullName || "N/A"}
@@ -622,7 +622,7 @@ const ComplaintDetails = () => {
 
                 <div
                   key={index}
-                  className="flex gap-4 min-w-0"
+                  className="flex gap-3 sm:gap-4 min-w-0"
                 >
 
                   <div className="flex flex-col items-center">
@@ -698,7 +698,7 @@ const ComplaintDetails = () => {
 
 
         {/* RIGHT CONTROL PANEL */}
-        <div className="space-y-5 xl:sticky xl:top-6 self-start">
+        <div className="space-y-5 self-start xl:sticky xl:top-6">
 
 
           {/* Investigation Control */}
@@ -739,7 +739,7 @@ const ComplaintDetails = () => {
                   onChange={(e) =>
                     setSelectedStatus(e.target.value)
                   }
-                  className="w-full border border-slate-300 rounded-xl px-3 py-2.5 text-sm focus:outline-none focus:ring-2 focus:ring-blue-600"
+                  className="w-full max-w-full border border-slate-300 rounded-xl px-3 py-2.5 text-sm focus:outline-none focus:ring-2 focus:ring-blue-600"
                 >
 
                   {statusOptions.map((status) => (
@@ -773,7 +773,7 @@ const ComplaintDetails = () => {
                   value={note}
                   onChange={(e) => setNote(e.target.value)}
                   placeholder="Enter internal investigation note"
-                  className="w-full border border-slate-300 rounded-xl px-3 py-2.5 text-sm focus:outline-none focus:ring-2 focus:ring-blue-600"
+                  className="w-full max-w-full border border-slate-300 rounded-xl px-3 py-2.5 text-sm focus:outline-none focus:ring-2 focus:ring-blue-600"
                 />
 
               </div>
@@ -815,7 +815,7 @@ const ComplaintDetails = () => {
                       setEscalationReason(e.target.value)
                     }
                     placeholder="Enter escalation details"
-                    className="w-full border border-slate-300 rounded-xl px-3 py-2.5 text-sm focus:outline-none focus:ring-2 focus:ring-red-500"
+                    className="w-full max-w-full border border-slate-300 rounded-xl px-3 py-2.5 text-sm focus:outline-none focus:ring-2 focus:ring-red-500"
                   />
 
                 </div>
