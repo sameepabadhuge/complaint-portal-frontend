@@ -16,6 +16,7 @@ const Reports = () => {
   const [loading, setLoading] = useState(false);
   const [currentPage, setCurrentPage] = useState(1);
   const [isMobile, setIsMobile] = useState(window.innerWidth < 640);
+
   const recordsPerPage = 10;
 
   useEffect(() => {
@@ -24,17 +25,16 @@ const Reports = () => {
   }, [period]);
 
   useEffect(() => {
-  const handleResize = () => {
-    setIsMobile(window.innerWidth < 640);
-  };
+    const handleResize = () => {
+      setIsMobile(window.innerWidth < 640);
+    };
 
-  window.addEventListener("resize", handleResize);
+    window.addEventListener("resize", handleResize);
 
-  return () => {
-    window.removeEventListener("resize", handleResize);
-  };
-}, []);
-
+    return () => {
+      window.removeEventListener("resize", handleResize);
+    };
+  }, []);
 
   const fetchReport = async () => {
     try {
@@ -104,9 +104,9 @@ const Reports = () => {
     );
 
     doc.text(
-     `Preliminary Review : ${report.summary.preliminaryReview}`,
-     20,
-     105
+      `Preliminary Review : ${report.summary.preliminaryReview}`,
+      20,
+      105
     );
 
     doc.text(
@@ -116,15 +116,15 @@ const Reports = () => {
     );
 
     doc.text(
-     `Awaiting Evidence : ${report.summary.awaitingEvidence}`,
-     20,
-     125
+      `Awaiting Evidence : ${report.summary.awaitingEvidence}`,
+      20,
+      125
     );
 
     doc.text(
-     `Escalated to CIABOC : ${report.summary.escalated}`,
-     20,
-     135
+      `Escalated to CIABOC : ${report.summary.escalated}`,
+      20,
+      135
     );
 
     doc.text(
@@ -134,9 +134,9 @@ const Reports = () => {
     );
 
     doc.text(
-     `Closed : ${report.summary.closed}`,
-     20,
-     155
+      `Closed : ${report.summary.closed}`,
+      20,
+      155
     );
 
     autoTable(doc, {
@@ -169,35 +169,38 @@ const Reports = () => {
     switch (status) {
       case "Resolved":
         return "bg-green-100 text-green-700";
+
       case "Under Investigation":
         return "bg-yellow-100 text-yellow-700";
+
       case "Submitted":
         return "bg-blue-100 text-blue-700";
+
       case "Awaiting Evidence":
         return "bg-orange-100 text-orange-700";
+
       default:
         return "bg-gray-100 text-gray-700";
     }
   };
 
   const indexOfLastRecord =
-      currentPage * recordsPerPage;
+    currentPage * recordsPerPage;
 
   const indexOfFirstRecord =
-       indexOfLastRecord - recordsPerPage;
+    indexOfLastRecord - recordsPerPage;
 
   const currentRecords =
-       report?.complaints.slice(
-         indexOfFirstRecord,
-         indexOfLastRecord
-       ) || [];
+    report?.complaints.slice(
+      indexOfFirstRecord,
+      indexOfLastRecord
+    ) || [];
 
   const totalPages = report
-      ? Math.ceil(
-         report.complaints.length / recordsPerPage
+    ? Math.ceil(
+        report.complaints.length / recordsPerPage
       )
-      : 1;
-
+    : 1;
 
   const chartData = report
     ? [
@@ -207,79 +210,76 @@ const Reports = () => {
         },
 
         {
-        name: "Preliminary Review",
-        value: report.summary.preliminaryReview,
+          name: "Preliminary Review",
+          value: report.summary.preliminaryReview,
         },
 
         {
-        name: "Under Investigation",
-        value: report.summary.underInvestigation,
+          name: "Under Investigation",
+          value: report.summary.underInvestigation,
         },
 
         {
-        name: "Awaiting Evidence",
-        value: report.summary.awaitingEvidence,
+          name: "Awaiting Evidence",
+          value: report.summary.awaitingEvidence,
         },
 
         {
-        name: "Escalated to CIABOC",
-        value: report.summary.escalated,
+          name: "Escalated to CIABOC",
+          value: report.summary.escalated,
         },
-        
+
         {
           name: "Resolved",
           value: report.summary.resolved,
         },
 
         {
-        name: "Closed",
-        value: report.summary.closed,
+          name: "Closed",
+          value: report.summary.closed,
         },
-        
       ]
     : [];
 
   return (
-    
-   <div className="bg-white rounded-3xl border border-slate-200 shadow-lg p-6 md:p-8 mb-6">
+    <div className="bg-white rounded-3xl border border-slate-200 shadow-lg p-6 md:p-8 mb-6">
 
+      {/* Header */}
+      <div className="flex flex-col lg:flex-row lg:items-center lg:justify-between mb-8 gap-5">
 
+        <div>
+          <h1 className="text-3xl md:text-4xl font-bold text-slate-900">
+            Complaint Reports
+          </h1>
 
-    <div className="flex flex-col lg:flex-row lg:items-center lg:justify-between mb-8 gap-5">
+          <p className="text-slate-500 mt-2">
+            Monitor complaint trends, investigation progress,
+            and operational statistics.
+          </p>
+        </div>
 
-  <div>
-    <h1 className="text-3xl md:text-4xl font-bold text-slate-900">
-      Complaint Reports
-    </h1>
+        <div className="flex flex-col sm:flex-row gap-3">
 
-    <p className="text-slate-500 mt-2">
-      Monitor complaint trends, investigation progress, and operational statistics.
-    </p>
-  </div>
+          <select
+            value={period}
+            onChange={(e) => setPeriod(e.target.value)}
+            className="px-4 py-3 border border-slate-300 rounded-xl bg-white min-w-[180px]"
+          >
+            <option value="2days">Last 2 Days</option>
+            <option value="weekly">Last 7 Days</option>
+            <option value="2weekly">Last 14 Days</option>
+            <option value="monthly">Last 30 Days</option>
+          </select>
 
-  <div className="flex flex-col sm:flex-row gap-3">
-    <select
-      value={period}
-      onChange={(e) => setPeriod(e.target.value)}
-      className="px-4 py-3 border border-slate-300 rounded-xl bg-white min-w-[180px]"
-    >
-      <option value="2days">Last 2 Days</option>
-      <option value="weekly">Last 7 Days</option>
-      <option value="2weekly">Last 14 Days</option>
-      <option value="monthly">Last 30 Days</option>
-    </select>
+          <button
+            onClick={downloadPDF}
+            className="px-6 py-3 bg-green-600 hover:bg-green-700 text-white rounded-xl font-medium"
+          >
+            Download PDF
+          </button>
 
-    <button
-      onClick={downloadPDF}
-      className="px-6 py-3 bg-green-600 hover:bg-green-700 text-white rounded-xl font-medium"
-    >
-      Download PDF
-    </button>
-  </div>
-
-</div>
-
-    
+        </div>
+      </div>
 
       {loading ? (
         <div className="text-center py-10">
@@ -289,269 +289,305 @@ const Reports = () => {
         report && (
           <>
 
+            {/* Complaint Status Summary */}
+            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-5 mb-8">
 
+              <div className="bg-blue-50 border border-blue-100 rounded-2xl p-5 shadow-sm">
+                <p className="text-sm text-slate-600">
+                  Total Complaints
+                </p>
 
+                <h3 className="text-3xl font-bold text-slate-900 mt-2">
+                  {report.summary.totalComplaints}
+                </h3>
+              </div>
 
+              <div className="bg-cyan-50 border border-cyan-100 rounded-2xl p-5 shadow-sm">
+                <p className="text-sm text-slate-600">
+                  Submitted
+                </p>
 
-      {/* Complaint Status Summary */}
-<div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-5 mb-8">
+                <h3 className="text-3xl font-bold text-slate-900 mt-2">
+                  {report.summary.submitted}
+                </h3>
+              </div>
 
-  {/* Total Complaints */}
-  <div className="bg-blue-50 border border-blue-100 rounded-2xl p-5 shadow-sm">
-    <p className="text-sm text-slate-600">Total Complaints</p>
-    <h3 className="text-3xl font-bold text-slate-900 mt-2">
-      {report.summary.totalComplaints}
-    </h3>
-  </div>
+              <div className="bg-purple-50 border border-purple-100 rounded-2xl p-5 shadow-sm">
+                <p className="text-sm text-slate-600">
+                  Preliminary Review
+                </p>
 
-  {/* Submitted */}
-  <div className="bg-cyan-50 border border-cyan-100 rounded-2xl p-5 shadow-sm">
-    <p className="text-sm text-slate-600">Submitted</p>
-    <h3 className="text-3xl font-bold text-slate-900 mt-2">
-      {report.summary.submitted}
-    </h3>
-  </div>
+                <h3 className="text-3xl font-bold text-slate-900 mt-2">
+                  {report.summary.preliminaryReview}
+                </h3>
+              </div>
 
-  {/* Preliminary Review */}
-  <div className="bg-purple-50 border border-purple-100 rounded-2xl p-5 shadow-sm">
-    <p className="text-sm text-slate-600">Preliminary Review</p>
-    <h3 className="text-3xl font-bold text-slate-900 mt-2">
-      {report.summary.preliminaryReview}
-    </h3>
-  </div>
+              <div className="bg-yellow-50 border border-yellow-100 rounded-2xl p-5 shadow-sm">
+                <p className="text-sm text-slate-600">
+                  Under Investigation
+                </p>
 
-  {/* Under Investigation */}
-  <div className="bg-yellow-50 border border-yellow-100 rounded-2xl p-5 shadow-sm">
-    <p className="text-sm text-slate-600">Under Investigation</p>
-    <h3 className="text-3xl font-bold text-slate-900 mt-2">
-      {report.summary.underInvestigation}
-    </h3>
-  </div>
+                <h3 className="text-3xl font-bold text-slate-900 mt-2">
+                  {report.summary.underInvestigation}
+                </h3>
+              </div>
 
-  {/* Awaiting Evidence */}
-  <div className="bg-orange-50 border border-orange-100 rounded-2xl p-5 shadow-sm">
-    <p className="text-sm text-slate-600">Awaiting Evidence</p>
-    <h3 className="text-3xl font-bold text-slate-900 mt-2">
-      {report.summary.awaitingEvidence}
-    </h3>
-  </div>
+              <div className="bg-orange-50 border border-orange-100 rounded-2xl p-5 shadow-sm">
+                <p className="text-sm text-slate-600">
+                  Awaiting Evidence
+                </p>
 
-  {/* Escalated */}
-  <div className="bg-red-50 border border-red-100 rounded-2xl p-5 shadow-sm">
-    <p className="text-sm text-slate-600">Escalated to CIABOC</p>
-    <h3 className="text-3xl font-bold text-slate-900 mt-2">
-      {report.summary.escalated}
-    </h3>
-  </div>
+                <h3 className="text-3xl font-bold text-slate-900 mt-2">
+                  {report.summary.awaitingEvidence}
+                </h3>
+              </div>
 
-  {/* Resolved */}
-  <div className="bg-green-50 border border-green-100 rounded-2xl p-5 shadow-sm">
-    <p className="text-sm text-slate-600">Resolved</p>
-    <h3 className="text-3xl font-bold text-slate-900 mt-2">
-      {report.summary.resolved}
-    </h3>
-  </div>
+              <div className="bg-red-50 border border-red-100 rounded-2xl p-5 shadow-sm">
+                <p className="text-sm text-slate-600">
+                  Escalated to CIABOC
+                </p>
 
-  {/* Closed */}
-  <div className="bg-gray-50 border border-gray-100 rounded-2xl p-5 shadow-sm">
-    <p className="text-sm text-slate-600">Closed</p>
-    <h3 className="text-3xl font-bold text-slate-900 mt-2">
-      {report.summary.closed}
-    </h3>
-  </div>
+                <h3 className="text-3xl font-bold text-slate-900 mt-2">
+                  {report.summary.escalated}
+                </h3>
+              </div>
 
-</div>
+              <div className="bg-green-50 border border-green-100 rounded-2xl p-5 shadow-sm">
+                <p className="text-sm text-slate-600">
+                  Resolved
+                </p>
 
+                <h3 className="text-3xl font-bold text-slate-900 mt-2">
+                  {report.summary.resolved}
+                </h3>
+              </div>
 
-   {/* Additional Statistics */}
-<div className="mb-8">
-  <h2 className="text-xl font-bold text-slate-900 mb-5">
-    Additional Statistics
-  </h2>
+              <div className="bg-gray-50 border border-gray-100 rounded-2xl p-5 shadow-sm">
+                <p className="text-sm text-slate-600">
+                  Closed
+                </p>
 
-  <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-5">
+                <h3 className="text-3xl font-bold text-slate-900 mt-2">
+                  {report.summary.closed}
+                </h3>
+              </div>
 
-    {/* Anonymous Complaints */}
-    <div className="bg-[#F5F3FF] border border-[#DDD6FE] rounded-2xl p-5 shadow-sm">
-      <p className="text-sm text-slate-600 font-medium">
-        Anonymous Complaints
-      </p>
+            </div>
 
-      <h3 className="text-3xl font-bold text-slate-900 mt-2">
-        {report.summary.anonymousComplaints}
-      </h3>
-    </div>
+            {/* Additional Statistics */}
+            <div className="mb-8">
 
-    {/* Named Complaints */}
-    <div className="bg-[#EEF2FF] border border-[#C7D2FE] rounded-2xl p-5 shadow-sm">
-      <p className="text-sm text-slate-600 font-medium">
-        Named Complaints
-      </p>
+              <h2 className="text-xl font-bold text-slate-900 mb-5">
+                Additional Statistics
+              </h2>
 
-      <h3 className="text-3xl font-bold text-slate-900 mt-2">
-        {report.summary.namedComplaints}
-      </h3>
-    </div>
+              <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-5">
 
-    {/* Evidence Files */}
-    <div className="bg-[#FFF7ED] border border-[#FED7AA] rounded-2xl p-5 shadow-sm">
-      <p className="text-sm text-slate-600 font-medium">
-        Evidence Files
-      </p>
+                <div className="bg-[#F5F3FF] border border-[#DDD6FE] rounded-2xl p-5 shadow-sm">
 
-      <h3 className="text-3xl font-bold text-slate-900 mt-2">
-        {report.summary.totalEvidence}
-      </h3>
-    </div>
+                  <p className="text-sm text-slate-600 font-medium">
+                    Anonymous Complaints
+                  </p>
 
-  </div>
-</div>
- 
+                  <h3 className="text-3xl font-bold text-slate-900 mt-2">
+                    {report.summary.anonymousComplaints}
+                  </h3>
 
-   
+                </div>
 
+                <div className="bg-[#EEF2FF] border border-[#C7D2FE] rounded-2xl p-5 shadow-sm">
 
+                  <p className="text-sm text-slate-600 font-medium">
+                    Named Complaints
+                  </p>
+
+                  <h3 className="text-3xl font-bold text-slate-900 mt-2">
+                    {report.summary.namedComplaints}
+                  </h3>
+
+                </div>
+
+                <div className="bg-[#FFF7ED] border border-[#FED7AA] rounded-2xl p-5 shadow-sm">
+
+                  <p className="text-sm text-slate-600 font-medium">
+                    Evidence Files
+                  </p>
+
+                  <h3 className="text-3xl font-bold text-slate-900 mt-2">
+                    {report.summary.totalEvidence}
+                  </h3>
+
+                </div>
+
+              </div>
+            </div>
 
             {/* Pie Chart */}
             <div className="bg-white rounded-3xl border border-slate-200 shadow-lg p-6 mb-8">
+
               <h2 className="text-xl font-bold text-slate-900 mb-4">
                 Complaint Status Distribution
               </h2>
 
-              <ResponsiveContainer width="100%" height={isMobile ? 300 : 350}>
+              <ResponsiveContainer
+                width="100%"
+                height={isMobile ? 420 : 350}
+              >
                 <PieChart>
+
                   <Pie
                     data={chartData}
                     dataKey="value"
                     nameKey="name"
-                    outerRadius={isMobile ? 90 : 120}
+                    outerRadius={isMobile ? 70 : 120}
                     label={!isMobile}
                   >
-                   
-                    <Cell fill="#2563EB" /> {/* Submitted */}
-                    <Cell fill="#F59E0B" /> {/* Preliminary Review */}
-                    <Cell fill="#10B981" /> {/* Under Investigation */}
-                    <Cell fill="#EF4444" /> {/* Awaiting Evidence */}
-                    <Cell fill="#8B5CF6" /> {/* Escalated */}
-                    <Cell fill="#06B6D4" /> {/* Resolved */}
-                    <Cell fill="#6B7280" /> {/* Closed */}
+
+                    <Cell fill="#2563EB" />
+                    <Cell fill="#F59E0B" />
+                    <Cell fill="#10B981" />
+                    <Cell fill="#EF4444" />
+                    <Cell fill="#8B5CF6" />
+                    <Cell fill="#06B6D4" />
+                    <Cell fill="#6B7280" />
 
                   </Pie>
 
                   <Tooltip />
+
                   {!isMobile && (
-  <Legend
-    verticalAlign="bottom"
-    align="center"
-    wrapperStyle={{
-      fontSize: "14px",
-      paddingTop: "10px",
-    }}
-  />
-)}
-                  
+                    <Legend
+                      verticalAlign="bottom"
+                      align="center"
+                      wrapperStyle={{
+                        fontSize: "14px",
+                        paddingTop: "10px",
+                      }}
+                    />
+                  )}
+
                 </PieChart>
               </ResponsiveContainer>
+
             </div>
 
             {/* Total Records */}
             <div className="bg-white border border-slate-200 rounded-xl px-4 py-3 mb-4 shadow-sm">
+
               <p className="text-slate-700 font-semibold">
-                   Total Records Found: {report.complaints.length}
+                Total Records Found:
+                {" "}
+                {report.complaints.length}
               </p>
+
             </div>
 
             {/* Table */}
             <div className="bg-white rounded-3xl border border-slate-200 shadow-lg overflow-hidden">
 
-            <div className="overflow-x-auto">    
-              <table className="w-full min-w-[700px] text-sm">
-                <thead>
-                  <tr className="bg-gray-100">
-                    <th className="p-3 text-left">CRN</th>
-                    <th className="p-3 text-left">Category</th>
-                    <th className="p-3 text-left">Status</th>
-                    <th className="p-3 text-left">Date</th>
-                  </tr>
-                </thead>
-            
+              <div className="overflow-x-auto">
 
-                <tbody>
-                  {report.complaints.length > 0 ? (
-                    currentRecords.map((item) => (
-                      <tr
-                        key={item._id}
-                        className="border-b hover:bg-gray-50"
-                      >
-                        <td className="p-3">{item.crn}</td>
+                <table className="w-full min-w-max text-xs sm:text-sm">
 
-                        <td className="p-3">
-                          {item.category}
-                        </td>
-
-                        <td className="p-3">
-                          <span
-                            className={`px-3 py-1 rounded-full text-xs font-medium ${getStatusColor(
-                              item.currentStatus
-                            )}`}
-                          >
-                            {item.currentStatus}
-                          </span>
-                        </td>
-
-                        <td className="p-3">
-                          {new Date(
-                            item.createdAt
-                          ).toLocaleDateString()}
-                        </td>
-                      </tr>
-                    ))
-                  ) : (
-                    <tr>
-                      <td
-                        colSpan="4"
-                        className="text-center p-8 text-gray-500"
-                      >
-                        No complaints found for this period
-                      </td>
+                  <thead>
+                    <tr className="bg-gray-100">
+                      <th className="p-3 text-left">CRN</th>
+                      <th className="p-3 text-left">Category</th>
+                      <th className="p-3 text-left">Status</th>
+                      <th className="p-3 text-left">Date</th>
                     </tr>
-                  )}
-                </tbody>
-              </table>
+                  </thead>
+
+                  <tbody>
+
+                    {report.complaints.length > 0 ? (
+                      currentRecords.map((item) => (
+                        <tr
+                          key={item._id}
+                          className="border-b hover:bg-gray-50"
+                        >
+
+                          <td className="p-3">
+                            {item.crn}
+                          </td>
+
+                          <td className="p-3">
+                            {item.category}
+                          </td>
+
+                          <td className="p-3">
+
+                            <span
+                              className={`px-2 py-1 rounded-full text-[10px] sm:text-xs font-medium whitespace-nowrap ${getStatusColor(
+                                item.currentStatus
+                              )}`}
+                            >
+                              {item.currentStatus}
+                            </span>
+
+                          </td>
+
+                          <td className="p-3">
+                            {new Date(
+                              item.createdAt
+                            ).toLocaleDateString()}
+                          </td>
+
+                        </tr>
+                      ))
+                    ) : (
+                      <tr>
+
+                        <td
+                          colSpan="4"
+                          className="text-center p-8 text-gray-500"
+                        >
+                          No complaints found for this period
+                        </td>
+
+                      </tr>
+                    )}
+
+                  </tbody>
+
+                </table>
+              </div>
+
+              {/* Pagination */}
+              <div className="flex flex-col sm:flex-row items-center justify-center gap-3 mt-6 p-5">
+
+                <button
+                  onClick={() =>
+                    setCurrentPage((prev) =>
+                      Math.max(prev - 1, 1)
+                    )
+                  }
+                  disabled={currentPage === 1}
+                  className="w-full sm:w-auto px-5 py-2 rounded-xl bg-slate-100 hover:bg-slate-200 transition-all disabled:opacity-50"
+                >
+                  Previous
+                </button>
+
+                <span className="font-medium">
+                  Page {currentPage} of {totalPages}
+                </span>
+
+                <button
+                  onClick={() =>
+                    setCurrentPage((prev) =>
+                      Math.min(prev + 1, totalPages)
+                    )
+                  }
+                  disabled={currentPage === totalPages}
+                  className="w-full sm:w-auto px-5 py-2 rounded-xl bg-slate-100 hover:bg-slate-200 transition-all disabled:opacity-50"
+                >
+                  Next
+                </button>
+
+              </div>
+
             </div>
 
-
-
-            <div className="flex flex-col sm:flex-row items-center justify-center gap-3 mt-6">
-  <button
-    onClick={() =>
-      setCurrentPage((prev) =>
-        Math.max(prev - 1, 1)
-      )
-    }
-    disabled={currentPage === 1}
-   className="w-full sm:w-auto px-5 py-2 rounded-xl bg-slate-100 hover:bg-slate-200 transition-all disabled:opacity-50 "
-  >
-    Previous
-  </button>
-
-  <span className="font-medium">
-    Page {currentPage} of {totalPages}
-  </span>
-
-  <button
-    onClick={() =>
-      setCurrentPage((prev) =>
-        Math.min(prev + 1, totalPages)
-      )
-    }
-    disabled={currentPage === totalPages}
-    className="w-full sm:w-auto px-5 py-2 rounded-xl bg-slate-100 hover:bg-slate-200 transition-all disabled:opacity-50"
-  >
-    Next
-  </button>
-</div>
-</div>
           </>
         )
       )}
