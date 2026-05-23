@@ -179,50 +179,52 @@ const ComplaintDetails = () => {
 
 
       {/* Investigation Header */}
-      <div className="bg-white shadow-lg rounded-3xl overflow-hidden">
+<div className="bg-white shadow-md rounded-2xl overflow-hidden border border-slate-200">
 
-        {/* Top */}
-        <div className="border-b border-white/10 px-6 py-5 bg-transparent">
+  {/* Top Header */}
+  <div className="bg-gradient-to-r from-slate-900 via-slate-800 to-slate-900 px-6 py-5">
 
-          <div className="flex flex-col lg:flex-row lg:items-center lg:justify-between gap-5">
+    <div className="flex flex-col lg:flex-row lg:items-center lg:justify-between gap-4">
 
-            <div>
+      <div>
+        <h1 className="text-xl lg:text-2xl font-bold text-white tracking-wide">
+          Internal Affairs Investigation Record
+        </h1>
 
-              <h1 className="text-2xl font-bold text-white tracking-tight">
+        <p className="text-sm text-slate-300 mt-1">
+          Case management & investigation control dashboard
+        </p>
+      </div>
 
-                Internal Affairs Investigation Record
+      <button
+        onClick={() => navigate("/admin/complaints")}
+        className="flex items-center gap-2 px-4 py-2 text-sm rounded-lg bg-white/10 hover:bg-white/20 text-white transition"
+      >
+        <FiArrowLeft />
+        Back to Queue
+      </button>
 
-              </h1>
+    </div>
+  </div>
 
-            </div>
+
+      
 
 
-            <button
-              onClick={() => navigate("/admin/complaints")}
-              className="ui-button-secondary flex items-center gap-2 px-4 py-2.5 text-sm"
-            >
 
-              <FiArrowLeft />
 
-              Back to Queue
-
-            </button>
-
-          </div>
-
-        </div>
 
 
         {/* Metadata Strip */}
-        <div className="grid grid-cols-2 lg:grid-cols-5 divide-x divide-y lg:divide-y-0 divide-white/30">
+        <div className="grid grid-cols-2 lg:grid-cols-5 bg-slate-50 border-t border-slate-200 divide-x divide-y lg:divide-y-0 divide-slate-200">
 
-          <div className="p-4 min-w-0">
+          <div className="p-4 min-w-0 hover:bg-white transition duration-200">
 
-            <p className="text-xs uppercase text-slate-500 font-medium">
+            <div className="flex items-center gap-2 text-slate-500 text-xs uppercase font-medium">
+              <FiFileText size={14} />
+               CRN
 
-              CRN
-
-            </p>
+            </div>
 
             <p className="font-bold text-slate-900 mt-2 break-words">
 
@@ -233,13 +235,13 @@ const ComplaintDetails = () => {
           </div>
 
 
-          <div className="p-4 min-w-0">
+          <div className="p-4 min-w-0 hover:bg-white transition duration-200">
 
-            <p className="text-xs uppercase text-slate-500 font-medium">
-
+            <div className="flex items-center gap-2 text-slate-500 text-xs uppercase font-medium">
+              <FiActivity size={14} />
               Status
 
-            </p>
+            </div>
 
             <div className="mt-2">
 
@@ -254,13 +256,12 @@ const ComplaintDetails = () => {
           </div>
 
 
-          <div className="p-4 min-w-0">
+          <div className="p-4 min-w-0 hover:bg-white transition duration-200">
 
-            <p className="text-xs uppercase text-slate-500 font-medium">
-
-              Priority
-
-            </p>
+           <div className="flex items-center gap-2 text-slate-500 text-xs uppercase font-medium">
+                <FiShield size={14} />
+                  Priority
+           </div>
 
             <div className="mt-2">
 
@@ -277,13 +278,12 @@ const ComplaintDetails = () => {
           </div>
 
 
-          <div className="p-4 min-w-0">
+          <div className="p-4 min-w-0 hover:bg-white transition duration-200">
 
-            <p className="text-xs uppercase text-slate-500 font-medium">
-
-              Category
-
-            </p>
+            <div className="flex items-center gap-2 text-slate-500 text-xs uppercase font-medium">
+              <FiClipboard size={14} />
+                    Category
+            </div>
 
             <p className="font-semibold text-slate-900 mt-2 break-words">
 
@@ -294,13 +294,12 @@ const ComplaintDetails = () => {
           </div>
 
 
-          <div className="p-4 min-w-0">
+          <div className="p-4 min-w-0 hover:bg-white transition duration-200">
 
-            <p className="text-xs uppercase text-slate-500 font-medium">
-
-              Submitted
-
-            </p>
+            <div className="flex items-center gap-2 text-slate-500 text-xs uppercase font-medium">
+               <FiCalendar size={14} />
+                  Submitted
+            </div>
 
             <p className="font-semibold text-slate-900 mt-2 text-sm break-words">
 
@@ -349,109 +348,74 @@ const ComplaintDetails = () => {
 
 
           {/* Case Summary */}
-          <section className="border-b border-slate-200 p-6">
+<section className="border-b border-slate-200 p-6">
 
-            <div className="flex items-center gap-2 mb-5">
+  <div className="flex items-center gap-2 mb-5">
+    <FiFileText className="text-slate-700" />
+    <h2 className="font-semibold text-slate-900">
+      Case Summary
+    </h2>
+  </div>
 
-              <FiFileText className="text-slate-700" />
+  <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
 
-              <h2 className="font-semibold text-slate-900">
+    <div className="bg-slate-50 border border-slate-200 rounded-xl p-4">
+      <p className="text-xs uppercase text-slate-500 font-medium mb-2">
+        Incident Date
+      </p>
 
-                Case Summary
+      <p className="font-medium text-slate-800 flex items-center gap-2">
+        <FiCalendar size={16} />
+        {complaint.incidentDate
+          ? new Date(complaint.incidentDate).toLocaleDateString()
+          : "N/A"}
+      </p>
+    </div>
 
-              </h2>
+    <div className="bg-slate-50 border border-slate-200 rounded-xl p-4">
+      <p className="text-xs uppercase text-slate-500 font-medium mb-2">
+        Incident Location
+      </p>
 
-            </div>
+      <p className="font-medium text-slate-800 flex items-center gap-2 break-words">
+        <FiMapPin size={16} />
+        {complaint.incidentLocation || "N/A"}
+      </p>
+    </div>
 
+    <div className="bg-slate-50 border border-slate-200 rounded-xl p-4">
+      <p className="text-xs uppercase text-slate-500 font-medium mb-2">
+        Frequency
+      </p>
 
-            <div className="grid grid-cols-1 md:grid-cols-2 gap-5 text-sm">
+      <p className="font-medium text-slate-800">
+        {complaint.frequency || "N/A"}
+      </p>
+    </div>
 
-              <div className="space-y-5">
+    <div className="bg-slate-50 border border-slate-200 rounded-xl p-4">
+      <p className="text-xs uppercase text-slate-500 font-medium mb-2">
+        Awareness Method
+      </p>
 
-                <div>
+      <p className="font-medium text-slate-800">
+        {complaint.awarenessMethod || "N/A"}
+      </p>
+    </div>
 
-                  <p className="text-slate-500 mb-1">
+  </div>
 
-                    Incident Date
-
-                  </p>
-
-                  <p className="font-medium text-slate-800 flex items-center gap-2 break-words">
-
-                    <FiCalendar size={14} />
-
-                    {complaint.incidentDate
-                      ? new Date(
-                          complaint.incidentDate
-                        ).toLocaleDateString()
-                      : "N/A"}
-
-                  </p>
-
-                </div>
-
-
-                <div>
-
-                  <p className="text-slate-500 mb-1">
-
-                    Incident Location
-
-                  </p>
-
-                  <p className="font-medium text-slate-800 flex items-center gap-2 break-words">
-
-                    <FiMapPin size={14} />
-
-                    {complaint.incidentLocation || "N/A"}
-
-                  </p>
-
-                </div>
-
-              </div>
+</section>
 
 
-              <div className="space-y-5">
 
-                <div>
-
-                  <p className="text-slate-500 mb-1">
-
-                    Frequency
-
-                  </p>
-
-                  <p className="font-medium text-slate-800 break-words">
-
-                    {complaint.frequency || "N/A"}
-
-                  </p>
-
-                </div>
+            
+ 
 
 
-                <div>
 
-                  <p className="text-slate-500 mb-1">
 
-                    Awareness Method
-
-                  </p>
-
-                  <p className="font-medium text-slate-800 break-words">
-
-                    {complaint.awarenessMethod || "N/A"}
-
-                  </p>
-
-                </div>
-
-              </div>
-
-            </div>
-
-          </section>
+          
 
 
           {/* Incident Narrative */}
@@ -826,7 +790,7 @@ const ComplaintDetails = () => {
               <button
                 type="submit"
                 disabled={updating}
-                className="ui-button-primary w-full py-3 rounded-xl text-sm font-medium transition-all shadow-sm"
+                className="w-full py-3 bg-green-600 hover:bg-green-700 text-white rounded-lg text-sm font-medium transition disabled:opacity-50"
               >
 
                 {updating
