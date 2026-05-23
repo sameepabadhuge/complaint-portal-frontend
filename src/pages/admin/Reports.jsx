@@ -380,13 +380,13 @@ const Reports = () => {
                 Complaint Status Distribution
               </h2>
 
-              <ResponsiveContainer width="100%" height={isMobile ? 420 : 350}>
+              <ResponsiveContainer width="100%" height={isMobile ? 320 : 350}>
                 <PieChart>
                   <Pie
                     data={chartData}
                     dataKey="value"
                     nameKey="name"
-                    outerRadius={isMobile ? 60 : 120}
+                    outerRadius={isMobile ? 95 : 120}
                     label={!isMobile}
                   >
                    
@@ -402,11 +402,12 @@ const Reports = () => {
 
                   <Tooltip />
                   <Legend 
-                     verticalAlign="bottom"
-                      align="center"
+                    verticalAlign={isMobile ? "bottom" : "middle"}
+                    align={isMobile ? "center" : "right"}
+                     layout={isMobile ? "horizontal" : "vertical"}
                       wrapperStyle={{
-                         fontSize: isMobile ? "11px" : "14px",
-                         paddingTop: "10px",
+                        fontSize: isMobile ? "11px" : "13px",
+                        
                       }}
                   />
                   
