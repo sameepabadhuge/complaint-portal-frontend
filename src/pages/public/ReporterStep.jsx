@@ -129,65 +129,57 @@ const ReporterStep = () => {
 
         </label>
 
-        <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+        <div className="space-y-4">
 
-          {/* Named */}
-          <button
-            type="button"
-            onClick={() => setType("named")}
-            className={`border-2 rounded-xl p-5 text-left transition-all duration-300 bg-transparent
-
-            ${
+          <label
+            className={`flex items-start gap-3 rounded-xl border-2 p-5 transition-all duration-300 cursor-pointer ${
               submissionType === "named"
                 ? "border-[#4CB744] bg-[#F3FFF2] ring-2 ring-[#4CB744]/20 shadow-sm"
                 : "border-slate-200 hover:border-[#4CB744]"
-            }
-            `}
+            }`}
           >
+            <input
+              type="radio"
+              name="submissionType"
+              value="named"
+              checked={submissionType === "named"}
+              onChange={() => setType("named")}
+              className="mt-1 h-4 w-4 accent-[#4CB744]"
+            />
+            <span>
+              <span className="block font-bold text-slate-900 mb-2">
+                Named Reporting
+              </span>
+              <span className="block text-sm text-slate-500">
+                Provide your contact details for possible follow-up.
+              </span>
+            </span>
+          </label>
 
-            <h3 className="font-bold text-slate-900 mb-2">
-
-              Named Reporting
-
-            </h3>
-
-            <p className="text-sm text-slate-500">
-
-              Provide your contact details for possible follow-up.
-
-            </p>
-
-          </button>
-
-
-
-          {/* Anonymous */}
-          <button
-            type="button"
-            onClick={() => setType("anonymous")}
-            className={`border-2 rounded-xl p-5 text-left transition-all duration-300 bg-transparent
-
-            ${
+          <label
+            className={`flex items-start gap-3 rounded-xl border-2 p-5 transition-all duration-300 cursor-pointer ${
               submissionType === "anonymous"
                 ? "border-[#4CB744] bg-[#F3FFF2] ring-2 ring-[#4CB744]/20 shadow-sm"
                 : "border-slate-200 hover:border-[#4CB744]"
-            }
-            `}
+            }`}
           >
-
-            <h3 className="font-bold text-slate-900 mb-2">
-
-              Anonymous Reporting
-
-            </h3>
-
-            <p className="text-sm text-slate-500">
-
-              Submit without revealing your identity.
-
-            </p>
-
-          </button>
+            <input
+              type="radio"
+              name="submissionType"
+              value="anonymous"
+              checked={submissionType === "anonymous"}
+              onChange={() => setType("anonymous")}
+              className="mt-1 h-4 w-4 accent-[#4CB744]"
+            />
+            <span>
+              <span className="block font-bold text-slate-900 mb-2">
+                Anonymous Reporting
+              </span>
+              <span className="block text-sm text-slate-500">
+                Submit without revealing your identity.
+              </span>
+            </span>
+          </label>
 
         </div>
 

@@ -419,7 +419,7 @@ const ComplaintStep = () => {
         {/* Back Button */}
         <button
           onClick={() => navigate("/report")}
-          className="w-full sm:w-auto border border-slate-300 bg-white hover:bg-slate-100 text-slate-700 font-semibold px-6 py-3 rounded-xl transition-all duration-300"
+          className="w-full sm:w-auto border border-green-600 bg-white hover:bg-green-50 text-green-600 font-semibold px-6 py-3 rounded-xl transition-all duration-300"
         >
 
           Back

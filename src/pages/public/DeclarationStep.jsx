@@ -147,7 +147,7 @@ const DeclarationStep = ({ onSubmit }) => {
         <div className="flex flex-col sm:flex-row items-center justify-between gap-4 pt-2">
           <button
             onClick={() => navigate("/report/evidence-upload")}
-            className="ui-button-secondary px-8 py-3"
+            className="w-full sm:w-auto border border-green-600 bg-white hover:bg-green-50 text-green-600 font-semibold px-6 py-3 rounded-xl transition-all duration-300"
           >
             Back
           </button>

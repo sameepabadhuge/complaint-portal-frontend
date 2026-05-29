@@ -1,351 +1,134 @@
 import { useState } from "react";
-import { useNavigate } from "react-router-dom";
 
+import StatusTimeline from "../../components/tracking/StatusTimeline";
 import { trackComplaintByCRN } from "../../services/trackingService";
 
 const TrackComplaint = () => {
-
-  const navigate = useNavigate();
-
   const [crn, setCrn] = useState("");
-
   const [loading, setLoading] = useState(false);
-
+  const [error, setError] = useState("");
   const [complaint, setComplaint] = useState(null);
 
-  const [error, setError] = useState("");
+  const handleTrack = async (event) => {
+    event.preventDefault();
 
+    const normalizedCrn = crn.trim();
 
-
-  // ========================================
-  // Handle Tracking
-  // ========================================
-
-  const handleTrack = async () => {
-
-  if (!crn.trim()) {
-    setError("Please enter a Complaint Reference Number");
-    return;
-  }
-
-  try {
+    if (!normalizedCrn) {
+      setError("Please enter a CRN to continue.");
+      setComplaint(null);
+      return;
+    }
 
     setLoading(true);
     setError("");
 
-    const data = await trackComplaintByCRN(crn);
-
-    setComplaint(data.data);
-
-  } catch (err) {
-
-    setComplaint(null);
-
-    setError(err.message || "Complaint not found");
-
-  } finally {
-
-    setLoading(false);
-
-  }
-
-};
-
-
-
-  // ========================================
-  // Status Text Colors
-  // ========================================
-
-  const getStatusColor = (status) => {
-  switch (status) {
-    case "Submitted":
-      return "bg-cyan-50 text-cyan-700 border border-cyan-200";
-
-    case "Preliminary Review":
-      return "bg-purple-50 text-purple-700 border border-purple-200";
-
-    case "Under Investigation":
-      return "bg-yellow-50 text-yellow-700 border border-yellow-200";
-
-    case "Awaiting Evidence":
-      return "bg-orange-50 text-orange-700 border border-orange-200";
-
-    case "Escalated to CIABOC":
-      return "bg-red-50 text-red-700 border border-red-200";
-
-    case "Resolved":
-      return "bg-green-50 text-green-700 border border-green-200";
-
-    case "Closed":
-      return "bg-gray-50 text-gray-700 border border-gray-200";
-
-    default:
-      return "bg-slate-50 text-slate-700 border border-slate-200";
-  }
-};
-
-
-
-  // ========================================
-  // Status Dot Colors
-  // ========================================
-
-  const getStatusDotColor = (status) => {
-
-    const colors = {
-
-      "Submitted": "bg-cyan-600",
-      "Preliminary Review": "bg-yellow-600",
-      "Under Investigation": "bg-orange-600",
-      "Awaiting Evidence": "bg-purple-600",
-      "Escalated to CIABOC": "bg-red-600",
-      "Resolved": "bg-green-600",
-      "Closed": "bg-gray-600"
-
-    };
-
-    return colors[status] || "bg-gray-600";
-
+    try {
+      const response = await trackComplaintByCRN(normalizedCrn);
+      setComplaint(response?.data || null);
+    } catch (requestError) {
+      setComplaint(null);
+      setError(requestError?.message || "Unable to track the complaint right now.");
+    } finally {
+      setLoading(false);
+    }
   };
 
-
-
   return (
+    <div className="ui-card-strong p-6 md:p-10">
+      <div className="mb-8">
+        <div className="inline-flex items-center rounded-full bg-green-50 px-4 py-2 text-sm font-semibold text-green-700 border border-green-200">
+          Complaint Tracking
+        </div>
 
-    <div className="bg-white rounded-3xl border border-slate-200 shadow-lg p-6 md:p-10">
+        <h2 className="ui-section-title mt-4">Track your complaint</h2>
 
-      {/* Header */}
-      <div className="text-center mb-10">
-
-        <h2 className="text-2xl md:text-3xl font-bold text-slate-900">
-
-          Track Complaint Status
-
-        </h2>
-
-        <p className="text-sm md:text-base text-slate-500 mt-3 leading-relaxed">
-
-          Enter your Complaint Reference Number (CRN) to track complaint
-          progress.
-
+        <p className="ui-subtitle mt-2 max-w-2xl">
+          Enter your CRN to check the current complaint status, submission time, and the latest progress updates.
         </p>
-
       </div>
 
-      <div className="flex justify-center mb-8">
-  <div className="bg-green-50 border border-green-100 rounded-2xl px-6 py-4">
-    <p className="text-sm text-slate-500">
-      Complaint Tracking Portal
-    </p>
-
-    <h3 className="text-xl font-bold text-slate-900 mt-1">
-      Real-Time Status Updates
-    </h3>
-  </div>
-</div>
-
-
-
-
-      {/* Search Section */}
-      <div className="max-w-3xl mx-auto bg-slate-50 border border-slate-200 rounded-3xl p-6">
+      <form onSubmit={handleTrack} className="panel-surface p-6 md:p-8">
+        <label className="block text-sm font-semibold text-slate-700 mb-2" htmlFor="crn">
+          Complaint Reference Number
+        </label>
 
         <div className="flex flex-col md:flex-row gap-4">
-
           <input
+            id="crn"
             type="text"
-            placeholder="Enter CRN"
             value={crn}
-            onChange={(e) => setCrn(e.target.value)}
-            className="ui-input flex-1 px-5 py-4"
+            onChange={(event) => setCrn(event.target.value)}
+            placeholder="Enter your CRN"
+            className="ui-input flex-1"
+            autoComplete="off"
           />
 
-
-
           <button
-            onClick={handleTrack}
+            type="submit"
             disabled={loading}
-            className="w-full md:w-auto bg-[#3e9638] hover:bg-[#31802c] text-white font-semibold px-8 py-4 rounded-xl transition-all duration-300 shadow-md hover:shadow-lg disabled:opacity-60"
+            className="px-6 py-3 rounded-xl font-semibold text-white bg-green-600 hover:bg-green-700 transition-all shadow-md disabled:opacity-70 disabled:cursor-not-allowed"
           >
-
-            {loading ? "Searching..." : "Track"}
-
+            {loading ? "Tracking..." : "Track Complaint"}
           </button>
-
         </div>
 
-      </div>
-
-
-
-      {/* Error Message */}
-      {error && (
-
-        <div className="mt-8 bg-red-50 border border-red-200 rounded-2xl p-4">
-
-          <p className="text-red-700 text-sm leading-relaxed">
-
+        {error && (
+          <div className="mt-4 rounded-xl border border-red-200 bg-red-50 p-4 text-sm text-red-700">
             {error}
+          </div>
+        )}
+      </form>
 
-          </p>
-
-        </div>
-
-      )}
-
-
-
-      {/* Complaint Result */}
       {complaint && (
+        <div className="mt-8 grid gap-6 xl:grid-cols-[1.1fr_0.9fr]">
+          <div className="panel-surface p-6 md:p-8">
+            <div className="flex flex-wrap items-center justify-between gap-3">
+              <div>
+                <p className="text-sm font-semibold text-slate-500">CRN</p>
+                <h3 className="text-2xl font-bold text-slate-900">{complaint.crn}</h3>
+              </div>
 
-        <div className="mt-12">
-
-          {/* Top Cards */}
-          <div className="grid grid-cols-1 md:grid-cols-3 gap-5">
-
-            {/* CRN */}
-            <div className="panel-surface p-5 rounded-2xl border border-slate-200">
-
-              <p className="text-sm text-slate-500 mb-2">
-
-                Complaint Reference
-
-              </p>
-
-              <span
-  className={`inline-flex px-3 py-1 rounded-full text-sm font-semibold ${getStatusColor(
-    complaint.currentStatus
-  )}`}
->
-  {complaint.currentStatus}
-</span>
-
-            </div>
-
-
-
-            {/* Category */}
-            <div className="panel-surface p-5 rounded-2xl border border-slate-200">
-
-              <p className="text-sm text-slate-500 mb-2">
-
-                Category
-
-              </p>
-
-              <h4 className="font-bold text-slate-900">
-
-                {complaint.category}
-
-              </h4>
-
-            </div>
-
-
-
-            {/* Current Status */}
-            <div className="panel-surface p-5 rounded-2xl border border-slate-200">
-
-              <p className="text-sm text-slate-500 mb-2">
-
-                Current Status
-
-              </p>
-
-              <h4 className={`font-bold ${getStatusColor(complaint.currentStatus)}`}>
-
+              <div className="rounded-full bg-green-50 px-4 py-2 text-sm font-semibold text-green-700 border border-green-200">
                 {complaint.currentStatus}
-
-              </h4>
-
+              </div>
             </div>
 
-          </div>
+            <div className="mt-6 grid gap-4 sm:grid-cols-2">
+              <div className="rounded-2xl bg-slate-50 p-4">
+                <p className="text-sm font-semibold text-slate-500">Category</p>
+                <p className="mt-1 text-base font-semibold text-slate-900">{complaint.category || "Not available"}</p>
+              </div>
 
+              <div className="rounded-2xl bg-slate-50 p-4">
+                <p className="text-sm font-semibold text-slate-500">Submitted At</p>
+                <p className="mt-1 text-base font-semibold text-slate-900">
+                  {complaint.submittedAt ? new Date(complaint.submittedAt).toLocaleString() : "Not available"}
+                </p>
+              </div>
 
+              <div className="rounded-2xl bg-slate-50 p-4">
+                <p className="text-sm font-semibold text-slate-500">Escalation Required</p>
+                <p className="mt-1 text-base font-semibold text-slate-900">
+                  {complaint.escalationRequired ? "Yes" : "No"}
+                </p>
+              </div>
 
-          {/* Timeline */}
-          <div className="mt-10">
-
-            <h3 className="text-xl md:text-2xl font-bold text-slate-900 mb-6">
-
-              Status Timeline
-
-            </h3>
-
-            <div className="space-y-6">
-
-              {complaint.statusHistory?.map((item, index) => (
-
-                <div
-                  key={index}
-                   className="bg-white border border-slate-200 rounded-2xl p-5 shadow-sm flex items-start gap-4"
-                >
-
-                  <div
-                    className={`w-5 h-5 rounded-full ${getStatusDotColor(item.status)} mt-1 flex-shrink-0`}
-                  />
-
-
-
-                  <div className="flex-1">
-
-                    <h4 className="font-semibold text-slate-900">
-
-                      {item.status}
-
-                    </h4>
-
-                    <p className="text-sm text-slate-500 mt-1 leading-relaxed">
-
-                      {item.note}
-
-                    </p>
-
-                    <p className="text-xs text-slate-400 mt-2">
-
-                      Updated:{" "}
-                      {item.updatedAt
-                        ? new Date(item.updatedAt).toLocaleDateString()
-                        : "N/A"}
-
-                    </p>
-
-                  </div>
-
-                </div>
-
-              ))}
-
+              <div className="rounded-2xl bg-slate-50 p-4">
+                <p className="text-sm font-semibold text-slate-500">Complaint ID</p>
+                <p className="mt-1 break-all text-base font-semibold text-slate-900">{complaint.complaintId}</p>
+              </div>
             </div>
-
           </div>
 
+          <StatusTimeline
+            currentStatus={complaint.currentStatus}
+            statusHistory={complaint.statusHistory || []}
+          />
         </div>
-
       )}
-
-
-
-      {/* Actions */}
-      <div className="mt-10 flex flex-col sm:flex-row items-center justify-center gap-4">
-
-        <button
-          onClick={() => navigate("/")}
-          className="w-full sm:w-auto bg-[#3e9638] hover:bg-[#31802c] text-white font-semibold px-8 py-3 rounded-xl transition-all duration-300 shadow-md hover:shadow-lg"
-        >
-
-          Return Home
-
-        </button>
-
-      </div>
-
     </div>
-
   );
-
 };
 
 export default TrackComplaint;
