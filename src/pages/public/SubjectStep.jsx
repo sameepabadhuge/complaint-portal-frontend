@@ -77,17 +77,17 @@ const SubjectStep = () => {
   };
 
   return (
-    <div className="bg-white rounded-3xl shadow-xl border border-gray-200 p-6 md:p-10">
+    <div className="ui-card-strong p-6 md:p-10">
       {/* Stepper */}
       <Stepper currentStep={3} />
 
       {/* Header */}
       <div className="mb-8">
-        <h2 className="text-2xl md:text-3xl font-bold text-gray-800">
+        <h2 className="ui-section-title">
           Subject Information
         </h2>
 
-        <p className="text-gray-500 mt-2">
+        <p className="ui-subtitle mt-2">
           Provide information regarding individuals involved in the incident.
         </p>
       </div>
@@ -96,10 +96,10 @@ const SubjectStep = () => {
       {subjects.map((subject, index) => (
         <div
           key={index}
-          className="border border-gray-200 rounded-2xl bg-white p-6 mb-6 shadow-sm"
+          className="panel-surface p-6 mb-6"
         >
           <div className="flex items-center justify-between mb-6">
-            <h3 className="text-lg font-bold text-gray-800">
+            <h3 className="text-lg font-bold text-slate-900">
               Subject Profile {index + 1}
             </h3>
 
@@ -117,7 +117,7 @@ const SubjectStep = () => {
           <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
             {/* Full Name */}
             <div>
-              <label className="block text-sm font-semibold text-gray-700 mb-2">
+              <label className="block text-sm font-semibold text-slate-700 mb-2">
                 Name(s) of person(s) involved
               </label>
 
@@ -128,13 +128,13 @@ const SubjectStep = () => {
                   updateSubject(index, "fullName", e.target.value)
                 }
                 placeholder="Multiple names separated by comma. State 'Unknown' if not known."
-                className="w-full bg-white border border-gray-300 rounded-xl px-4 py-3 text-gray-800 placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-green-500"
+                className="ui-input"
               />
             </div>
 
             {/* Designation */}
             <div>
-              <label className="block text-sm font-semibold text-gray-700 mb-2">
+              <label className="block text-sm font-semibold text-slate-700 mb-2">
                 Designation / Role
               </label>
 
@@ -145,13 +145,13 @@ const SubjectStep = () => {
                   updateSubject(index, "designation", e.target.value)
                 }
                 placeholder="Enter designation"
-                className="w-full bg-white border border-gray-300 rounded-xl px-4 py-3 text-gray-800 placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-green-500"
+                className="ui-input"
               />
             </div>
 
 
             <div>
-              <label className="block text-sm font-semibold text-gray-700 mb-2">
+              <label className="block text-sm font-semibold text-slate-700 mb-2">
                 Organisation of subject(s)
               </label>
 
@@ -160,7 +160,7 @@ const SubjectStep = () => {
                 onChange={(e) =>
                   updateSubject(index, "organisation", e.target.value)
                 }
-                className="w-full bg-white border border-gray-300 rounded-xl px-4 py-3 text-gray-800 focus:outline-none focus:ring-2 focus:ring-green-500"
+                className="ui-select"
               >
                 <option value="">Select Organisation</option>
                 <option value="SLT">SLT</option>
@@ -174,14 +174,13 @@ const SubjectStep = () => {
 
             {/* Relationship */}
             <div className="md:col-span-2">
-              <label className="block text-sm font-semibold text-gray-700 mb-4">
+              <label className="block text-sm font-semibold text-slate-700 mb-4">
                 Relationship of subject to reporter
               </label>
 
-              <div className="space-y-3">
-                <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-4 gap-4">
+              <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-4 gap-4">
                   {["Superior", "Manager", "Peer", "Colleague", "Subordinate", "External party", "Unknown"].map((rel) => (
-                    <label key={rel} className="flex items-center gap-3 p-3 border border-gray-300 rounded-lg hover:border-green-500 hover:bg-green-50 transition-all cursor-pointer">
+                    <label key={rel} className={`flex items-center gap-3 p-3 rounded-xl border transition-all cursor-pointer ${subject.relationship === rel ? "border-[#1f5ea8] bg-[#eff6ff] shadow-sm" : "border-slate-200 hover:border-[#1f5ea8] hover:bg-slate-50"}`}>
                       <input
                         type="radio"
                         name={`relationship-${index}`}
@@ -190,12 +189,11 @@ const SubjectStep = () => {
                         onChange={(e) =>
                           updateSubject(index, "relationship", e.target.value)
                         }
-                        className="accent-green-600 w-4 h-4 cursor-pointer"
+                        className="accent-[#1f5ea8] w-4 h-4 cursor-pointer"
                       />
-                      <span className="text-sm font-medium text-gray-700">{rel}</span>
+                      <span className="text-sm font-medium text-slate-700">{rel}</span>
                     </label>
                   ))}
-                </div>
               </div>
             </div>
           </div>
@@ -204,47 +202,47 @@ const SubjectStep = () => {
 
       {/* Error */}
       {error && (
-        <div className="mt-6 bg-red-50 border border-red-200 rounded-xl p-4">
+        <div className="mt-6 bg-red-50 border border-red-200 rounded-2xl p-4">
           <p className="text-sm text-red-700">{error}</p>
         </div>
       )}
 
       {/* Senior Management */}
-      <div className="mt-8">
-        <label className="block text-sm font-semibold text-gray-700 mb-4">
+      <div className="mt-8 panel-surface p-6">
+        <label className="block text-sm font-semibold text-slate-700 mb-4">
           Does the complaint involve senior management or any IAU member? <span className="text-red-500">*</span>
         </label>
 
         <div className="flex flex-wrap items-center gap-6">
-          <label className="flex items-center gap-2 text-gray-700">
+          <label className="flex items-center gap-2 text-slate-700">
             <input
               type="radio"
               name="management"
               checked={subjects[0].seniorManagementInvolved === true}
               onChange={() => updateSubject(0, "seniorManagementInvolved", true)}
-              className="accent-green-600"
+              className="accent-[#1f5ea8]"
             />
             Yes
           </label>
 
-          <label className="flex items-center gap-2 text-gray-700">
+          <label className="flex items-center gap-2 text-slate-700">
             <input
               type="radio"
               name="management"
               checked={subjects[0].seniorManagementInvolved === false}
               onChange={() => updateSubject(0, "seniorManagementInvolved", false)}
-              className="accent-green-600"
+              className="accent-[#1f5ea8]"
             />
             No
           </label>
 
-          <label className="flex items-center gap-2 text-gray-700">
+          <label className="flex items-center gap-2 text-slate-700">
             <input
               type="radio"
               name="management"
               checked={subjects[0].seniorManagementInvolved === "unsure"}
               onChange={() => updateSubject(0, "seniorManagementInvolved", "unsure")}
-              className="accent-green-600"
+              className="accent-[#1f5ea8]"
             />
             Unsure
           </label>
@@ -254,7 +252,7 @@ const SubjectStep = () => {
       {/* Senior Management Person Name */}
       {subjects[0].seniorManagementInvolved === true && (
         <div className="mt-6">
-          <label className="block text-sm font-semibold text-gray-700 mb-2">
+          <label className="block text-sm font-semibold text-slate-700 mb-2">
             If yes — name(s) of senior personnel involved <span className="text-red-500">*</span>
           </label>
 
@@ -263,34 +261,34 @@ const SubjectStep = () => {
             value={subjects[0].seniorManagementPersonName}
             onChange={(e) => updateSubject(0, "seniorManagementPersonName", e.target.value)}
             placeholder="Conditionally displayed. Free text."
-            className="w-full bg-white border border-gray-300 rounded-xl px-4 py-3 text-gray-800 placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-green-500"
+            className="ui-input"
           />
         </div>
       )}
 
       {/* CIABOC Escalation Notice */}
       {subjects[0].seniorManagementInvolved === true && (
-        <div className="mt-6 bg-red-50 border-l-4 border-red-600 rounded-lg p-4">
-          <p className="text-sm text-red-700 font-semibold mb-2">🚨 CIABOC Escalation Flag</p>
-          <p className="text-sm text-red-600">
+        <div className="mt-6 bg-red-50 border border-red-200 rounded-2xl p-4">
+          <p className="text-sm text-red-700 font-semibold mb-2">CIABOC Escalation Notice</p>
+          <p className="text-sm text-red-600 leading-relaxed">
             This complaint involves senior management or IAU member. The system will automatically flag this submission for direct CIABOC escalation and display an on-screen notice to the reporter.
           </p>
         </div>
       )}
 
       {/* Escalation Notice */}
-      <div className="mt-8 bg-amber-50 border-l-4 border-amber-600 rounded-lg p-4">
-        <p className="text-sm text-amber-700">
+      <div className="mt-8 bg-amber-50 border border-amber-200 rounded-2xl p-4">
+        <p className="text-sm text-amber-700 leading-relaxed">
           Complaints involving senior management may require escalation to higher governance or external oversight authorities.
         </p>
       </div>
 
       {/* Buttons */}
-      <div className="mt-10 flex items-center justify-between">
+      <div className="mt-10 flex flex-col-reverse sm:flex-row items-stretch sm:items-center justify-between gap-4">
         {/* Back */}
         <button
           onClick={() => navigate("/report/complaint-details")}
-          className="px-6 py-3 rounded-xl font-semibold border border-green-600 text-green-600 hover:bg-green-50 transition-all"
+          className="w-full sm:w-auto border border-green-600 bg-white hover:bg-green-50 text-green-600 font-semibold px-6 py-3 rounded-xl transition-all duration-300"
         >
           Back
         </button>
@@ -298,7 +296,7 @@ const SubjectStep = () => {
         {/* Continue */}
         <button
           onClick={handleContinue}
-          className="px-8 py-3 rounded-xl font-semibold bg-green-600 text-white hover:bg-green-700 transition-all shadow-md hover:shadow-lg"
+          className="w-full sm:w-auto bg-[#3e9638] hover:bg-[#31802c] text-white font-semibold px-8 py-3 rounded-xl transition-all duration-300 shadow-md hover:shadow-lg"
         >
           Next
         </button>

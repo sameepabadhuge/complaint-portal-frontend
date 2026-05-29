@@ -11,7 +11,23 @@ const Stepper = ({ currentStep }) => {
   ];
 
   return (
-    <div className="w-full mb-10 overflow-x-auto">
+    <div className="w-full mb-10 rounded-2xl border border-slate-200 bg-gradient-to-b from-white to-slate-50 px-4 py-5 md:px-6 shadow-sm overflow-x-auto">
+      <div className="flex items-center justify-between gap-4 mb-6 min-w-[600px] md:min-w-full">
+        <div>
+          <p className="text-xs font-semibold uppercase tracking-[0.24em] text-slate-400">
+            Application Progress
+          </p>
+          <h3 className="mt-1 text-lg font-bold text-slate-900">
+            Step {currentStep} of {steps.length}
+          </h3>
+        </div>
+
+        <div className="hidden md:flex items-center gap-2 rounded-full border border-slate-200 bg-white px-4 py-2 text-sm font-semibold text-slate-600 shadow-sm">
+          <span className="h-2.5 w-2.5 rounded-full bg-green-500" />
+          Secure complaint submission flow
+        </div>
+      </div>
+
       <div className="flex items-start justify-between min-w-[600px] md:min-w-full">
 
         {steps.map((step, index) => {
@@ -27,7 +43,7 @@ const Stepper = ({ currentStep }) => {
             >
               {/* LINE */}
               {index !== steps.length - 1 && (
-                <div className="absolute top-4 md:top-5 left-1/2 w-full h-1 bg-gray-200 z-0">
+                <div className="absolute top-4 md:top-5 left-1/2 w-full h-1 rounded-full bg-slate-200 z-0 overflow-hidden">
                   <div
                     className={`h-1 transition-all duration-300 ${
                       currentStep > stepNumber
@@ -47,8 +63,8 @@ const Stepper = ({ currentStep }) => {
                   isCompleted
                     ? "bg-green-500 border-green-500 text-white"
                     : isActive
-                    ? "bg-green-100 border-green-600 text-green-700"
-                    : "bg-white border-gray-300 text-gray-400"
+                    ? "bg-slate-900 border-slate-900 text-white shadow-md shadow-slate-900/15"
+                    : "bg-white border-slate-300 text-slate-400"
                 }
               `}
               >
@@ -61,8 +77,10 @@ const Stepper = ({ currentStep }) => {
                 max-w-[70px] md:max-w-none
                 ${
                   isCompleted || isActive
-                    ? "text-green-600"
-                    : "text-gray-400"
+                    ? isActive
+                      ? "text-slate-900"
+                      : "text-green-700"
+                    : "text-slate-400"
                 }
               `}
               >
